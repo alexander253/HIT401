@@ -43,6 +43,14 @@ get("/myaccount",function($app){
    $app->render(LAYOUT,"myaccount");
 });
 
+get("/points",function($app){
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","My Account");
+   require MODEL;
+   $app->set_message("list", points());
+   $app->render(LAYOUT,"points");
+});
+
 get("/cart",function($app){
    $app->set_message("title","My Cart");
    $app->set_message("message","Your cart:");
@@ -179,19 +187,12 @@ post("/signup",function($app){
           $email = $app->form('email');
           $fname = $app->form('fname');
           $lname = $app->form('lname');
-          $title = $app->form('title');
-          $address = $app->form('address');
-          $city = $app->form('city');
-          $state = $app->form('state');
-          $country = $app->form('country');
-          $postcode = $app->form('postcode');
-          $phone = $app->form('phone');
           $pw = $app->form('password');
           $confirm = $app->form('password-confirm');
 
-          if($email && $fname && $lname && $title && $address && $city && $state && $country && $postcode && $phone && $pw && $confirm){
+          if($email && $fname && $lname && $pw && $confirm){
               try{
-                sign_up($email,$fname, $lname, $title, $address, $city, $state, $country, $postcode, $phone,$pw,$confirm);
+                sign_up($email,$fname, $lname,$pw,$confirm);
                 $app->set_flash(htmlspecialchars($app->form('name'))." is now signed up ");
              }
              catch(Exception $e){
@@ -282,6 +283,21 @@ post("/cart",function($app){
                 }
       if($productno && $itemno){
         placeorder($date, $email, $purchaseno, $itemno, $productno);
+        $app->set_flash(htmlspecialchars(" Your order is now placed "));
+        }
+        $app->redirect_to("/myaccount");
+
+      })
+;
+
+post("/points",function($app){
+      session_start();
+      require MODEL;
+      $cart= $_SESSION['cart'];
+      $points = "SELECT points FROM user where email = ? ";
+
+      if($productno && $itemno){
+        addpoint($points);
         $app->set_flash(htmlspecialchars(" Your order is now placed "));
         }
         $app->redirect_to("/myaccount");

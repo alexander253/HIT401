@@ -4,7 +4,7 @@
 function get_db(){
     $db = null;
     try{
-        $db = new PDO('mysql:host=localhost:3308;dbname=art_db', 'root','hit325');
+        $db = new PDO('mysql:host=localhost:3308;dbname=waste_app', 'root','hit325');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
@@ -79,6 +79,21 @@ function placeorder($date, $email, $purchaseno, $itemno, $productno){
     }
   }
 
+  function addpoint($points){
+      session_start();
+      $db = get_db();
+      $email= $_SESSION["email"];
+
+      $updated_points = $points +2;
+
+      $query2 = "UPDATE user set points = $updated_points where email = $email";
+      $statement = $db->prepare($query2);
+      $binding = array($updated_points);
+      $statement -> execute($binding);
+
+        }
+
+
 #get all product items from database
 function product_list(){
   try{
@@ -100,7 +115,7 @@ function product_list(){
     session_start();
     try{
       $db = get_db();
-      $query = "SELECT email,fname,lname,title,address,city,state,country,postcode,phone,salt,hashed_password FROM customer where email = ? ";
+      $query = "SELECT email,fname,lname,salt,hashed_password FROM user where email = ? ";
       $statement = $db->prepare($query);
       $email= $_SESSION["email"];
       $binding = array($email);
@@ -114,17 +129,36 @@ function product_list(){
     }
     }
 
+    #get point details from database
+      function points(){
+        session_start();
+        try{
+          $db = get_db();
+          $query = "SELECT points FROM user where email = ? ";
+          $statement = $db->prepare($query);
+          $email= $_SESSION["email"];
+          $binding = array($email);
+          $statement -> execute($binding);
+          $list = $statement->fetchall(PDO::FETCH_ASSOC);
+          return $list;
+        }
+        catch(PDOException $e){
+          throw new Exception($e->getMessage());
+          return "";
+        }
+        }
+
 #signup function
-  function sign_up($email,$fname, $lname, $title, $address, $city, $state, $country, $postcode, $phone, $password, $password_confirm){
+  function sign_up($email,$fname, $lname, $password, $password_confirm){
      try{
        $db = get_db();
 
        if(validate_user_name($db,$email) && validate_passwords($password,$password_confirm)){
             $salt = generate_salt();
             $password_hash = generate_password_hash($password,$salt);
-            $query = "INSERT INTO customer (email,fname,lname,title,address,city,state,country,postcode,phone,salt,hashed_password) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+            $query = "INSERT INTO user (email,fname,lname,salt,hashed_password) VALUES (?,?,?,?,?)";
             if($statement = $db->prepare($query)){
-               $binding = array($email,$fname, $lname, $title, $address, $city, $state, $country, $postcode, $phone,$salt,$password_hash);
+               $binding = array($email,$fname, $lname,$salt,$password_hash);
                if(!$statement -> execute($binding)){
                    throw new Exception("Could not execute query.");
                }
@@ -164,7 +198,7 @@ function get_user_name(){
 
    try{
       $db = get_db();
-      $query = "SELECT fname FROM customer WHERE email=?";
+      $query = "SELECT fname FROM user WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($email);
          if(!$statement -> execute($binding)){
@@ -191,7 +225,7 @@ function get_user_name(){
 function sign_in($user_name,$password){
    try{
       $db = get_db();
-      $query = "SELECT email, salt, hashed_password FROM customer WHERE email=?";
+      $query = "SELECT email, salt, hashed_password FROM user WHERE email=?";
       if($statement = $db->prepare($query)){
          $binding = array($user_name);
          if(!$statement -> execute($binding)){
@@ -225,7 +259,7 @@ function is_db_empty(){
    $is_empty = false;
    try{
       $db = get_db();
-      $query = "SELECT email FROM customer WHERE email=?";
+      $query = "SELECT email FROM user WHERE email=?";
       if($statement = $db->prepare($query)){
 	     $email="god@hotmail.com";
          $binding = array($email);
@@ -302,7 +336,7 @@ function is_authenticated(){
 
         try{
            $db = get_db();
-           $query = "SELECT hashed_password FROM customer WHERE email=?";
+           $query = "SELECT hashed_password FROM user WHERE email=?";
            if($statement = $db->prepare($query)){
              $binding = array($email);
              if(!$statement -> execute($binding)){

@@ -1,16 +1,10 @@
-USE art_db;
+USE waste_app;
 
-CREATE TABLE `customer` (
+CREATE TABLE `user` (
   email varchar(255) NOT NULL,
   fname varchar(255) NOT NULL,
   lname varchar(255) NOT NULL,
-  title varchar(255) NOT NULL,
-  address varchar(255) NOT NULL,
-  city varchar(255) NOT NULL,
-  state varchar(255) NOT NULL,
-  country varchar(255) NOT NULL,
-  postcode MEDIUMINT (5) UNSIGNED ZEROFILL NOT NULL,
-  phone MEDIUMINT (10) UNSIGNED ZEROFILL NOT NULL,
+  points INT (99),
   # Assuming SHA256 hash
   hashed_password char(64) NOT NULL,
   # Assuming 16 chars in salt
