@@ -128,6 +128,24 @@ function product_list(){
     }
     }
 
+    function leaderboard(){
+      session_start();
+      try{
+        $db = get_db();
+        $query = "SELECT email,fname,points FROM user ORDER BY points DESC ";
+        $statement = $db->prepare($query);
+        $email= $_SESSION["email"];
+        $binding = array($email);
+        $statement -> execute($binding);
+        $list = $statement->fetchall(PDO::FETCH_ASSOC);
+        return $list;
+      }
+      catch(PDOException $e){
+        throw new Exception($e->getMessage());
+        return "";
+      }
+      }
+
     #get point details from database
       function points(){
         session_start();

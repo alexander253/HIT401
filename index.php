@@ -43,6 +43,14 @@ get("/myaccount",function($app){
    $app->render(LAYOUT,"myaccount");
 });
 
+get("/leaderboard",function($app){
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Leader Board");
+   require MODEL;
+   $app->set_message("list", leaderboard());
+   $app->render(LAYOUT,"leaderboard");
+});
+
 get("/points",function($app){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","My Account");

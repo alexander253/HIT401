@@ -15,6 +15,7 @@
   <li><a href='/addproduct'>Add a Product</a></li>
   <li><a href='/cart'>My Cart</a></li>
   <li><a href='/myaccount'>My Account</a></li>
+  <li><a href='/leaderboard'>Leader Board</a></li>
   <li><a href='/signin'>Sign in</a></li>
   <li><a href='/signup'>Sign up</a></li>
   <li><a href='/signout'>Sign out</a></li>
