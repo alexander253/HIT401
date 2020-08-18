@@ -86,10 +86,9 @@ function placeorder($date, $email, $purchaseno, $itemno, $productno){
 
       $updated_points = $points +2;
 
-      $query2 = "UPDATE user set points = $updated_points where email = $email";
+      $query2 = "UPDATE user set points = '15' where email = 'daisy@hotmail.com'";
       $statement = $db->prepare($query2);
-      $binding = array($updated_points);
-      $statement -> execute($binding);
+      $statement -> execute();
 
         }
 

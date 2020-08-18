@@ -290,17 +290,25 @@ post("/cart",function($app){
       })
 ;
 
-post("/points",function($app){
+post("/addpoints",function($app){
       session_start();
       require MODEL;
-      $cart= $_SESSION['cart'];
-      $points = "SELECT points FROM user where email = ? ";
+      $db = get_db();
+      $email= $_SESSION["email"];
 
-      if($productno && $itemno){
-        addpoint($points);
-        $app->set_flash(htmlspecialchars(" Your order is now placed "));
-        }
-        $app->redirect_to("/myaccount");
+      $query = "SELECT points FROM user where email = '$email'";
+      $statement= $db->prepare($query);
+      $statement->execute();
+      $list = $statement->fetch(PDO::FETCH_ASSOC);
+
+      $points= (int) $list['points'];
+
+      $updated_points = $points+ 1;
+
+      $query2 = "UPDATE user set points = '$updated_points' where email = '$email'";
+      $statement = $db->prepare($query2);
+      $statement -> execute();
+      $app->redirect_to("/points");
 
       })
 ;

@@ -20,7 +20,7 @@ echo "<h1>POINTS</h1>";
 
  ?>
 
- <form action='/cart' method='POST'>
+ <form action='/addpoints' method='POST'>
   <input type='hidden' name='_method' value='post' />
   <input type='submit' value='Add point' />
  </form>
