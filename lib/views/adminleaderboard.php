@@ -7,8 +7,8 @@ table {
 
 td, th {
   border: 1px solid #dddddd;
-  min-width: 100px;
-  max-width: 100px;
+  min-width: 120px;
+  max-width: 120px;
   text-align: left;
   padding: 8px;
 }
@@ -26,7 +26,9 @@ echo "<h1>Leader Board</h1>";
 
  echo "<table>
    <tr>
-     <th>Name</th>
+     <th>Email</th>
+     <th>First Name</th>
+     <th>Last Name</th>
      <th>Points</th>
    </tr>
  </table>";
@@ -51,7 +53,9 @@ echo "<h1>Leader Board</h1>";
    <table>
 
      <tr>
+       <td>{$email}</td>
        <td>{$fname}</td>
+       <td>{$lname}</td>
        <td>{$points}</td>
      </tr>
    </table>

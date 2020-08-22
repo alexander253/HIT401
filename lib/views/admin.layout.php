@@ -13,8 +13,10 @@
   <li><a href='/'>Home</a></li>
   <li><a href='/bins'>Bins</a></li>
   <li><a href='/addbin'>Add a Bin</a></li>
-  <li><a href='/cart'>My Cart</a></li>
+  <!--<li><a href='/cart'>My Cart</a></li>
   <li><a href='/myaccount'>My Account</a></li>
+-->
+
   <li><a href='/leaderboard'>Leader Board</a></li>
   <li><a href='/signin'>Sign in</a></li>
   <li><a href='/signup'>Sign up</a></li>
@@ -27,9 +29,12 @@
 <div id='content'>
 <?php
   if(!empty($flash)){
-    echo "<p id='flash'>{$flash}</p>";
+    echo "<p class='flash'>{$flash}</p>";
   }
-  require VIEWS."/{$content}.php";
+  if(!empty($error)){
+    echo "<p class='flash'>{$error}</p>";
+  }
+  require $content;
 ?>
 </div> <!-- end content -->
 

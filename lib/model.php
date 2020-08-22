@@ -114,7 +114,7 @@ function product_list(){
     session_start();
     try{
       $db = get_db();
-      $query = "SELECT email,fname,lname,salt,hashed_password FROM user where email = ? ";
+      $query = "SELECT email,fname,lname,points,salt,hashed_password FROM user where email = ? ";
       $statement = $db->prepare($query);
       $email= $_SESSION["email"];
       $binding = array($email);
@@ -132,7 +132,7 @@ function product_list(){
       session_start();
       try{
         $db = get_db();
-        $query = "SELECT email,fname,points FROM user ORDER BY points DESC ";
+        $query = "SELECT email,fname,lname, points FROM user ORDER BY points DESC ";
         $statement = $db->prepare($query);
         $email= $_SESSION["email"];
         $binding = array($email);
@@ -338,6 +338,38 @@ function validate_password($password){
   return true;
 }
 
+function admin_sign_in($admin, $password){
+  try{
+    if ($admin && $password){
+      if ($admin === "admin" && $password === "Admin"){
+        set_admin_authenticated_session($admin, $password);
+      }
+      else{
+      throw new Exception("Wrong credentials entered, please enter correct credentials");
+      }
+    }
+    else{
+      throw new Exception("Fields are left empty, please fill all fields");
+    }
+  }
+  catch(Exception $e){
+    throw new Exception($e->getMessage());
+  }
+}
+
+
+
+function set_admin_authenticated_session($admin,$password){
+      session_start();
+
+      //Make it a bit harder to session hijack
+      session_regenerate_id(true);
+
+      $_SESSION["admin"] = $admin;
+      $_SESSION["password"] = $password;
+      session_write_close();
+}
+
 
 function is_authenticated(){
     $email = "";
@@ -377,6 +409,34 @@ function is_authenticated(){
 
 }
 
+function is_admin_authenticated(){
+  $admin ="";
+  $password = "";
+
+  session_start();
+  if(!empty($_SESSION["admin"]) && !empty($_SESSION["password"])){
+     $admin = $_SESSION["admin"];
+     $password = $_SESSION["password"];
+  }
+  session_write_close();
+
+  if(!empty($admin) && !empty($password)){
+
+      try{
+         if($admin === "admin" && $password === "Admin"){
+           return true;
+
+         }
+       }
+
+      catch(Exception $e){
+         throw new Exception("Authentication not working properly. {$e->getMessage()}");
+      }
+  } else{
+      return false;
+  }
+}
+
 function sign_out(){
     session_start();
     if(!empty($_SESSION["email"]) && !empty($_SESSION["hash"])){
@@ -385,5 +445,14 @@ function sign_out(){
        $_SESSION = array();
        session_destroy();
     }
+    else if(!empty($_SESSION["admin"]) && !empty($_SESSION["password"])){
+      $_SESSION["admin"] = "";
+      $_SESSION["password"] = "";
+      $_SESSION = array();
+      session_destroy();
+    }
+
     session_write_close();
+
+
 }

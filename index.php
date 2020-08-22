@@ -15,10 +15,19 @@ DEFINE("MODEL",LIB."/model.php");
 DEFINE("APP",LIB."/application.php");
 
 # Define a layout
+
+
 DEFINE("LAYOUT","standard");
+DEFINE("ADMIN","admin");
+
+
+
+
+
 
 # This inserts our application code which handles the requests and other things
 require APP;
+
 
 
 
@@ -28,11 +37,19 @@ require APP;
 
 #GET Functions
 get("/bins",function($app){
+
+  require MODEL;
+  if (is_admin_authenticated()){
    $app->set_message("title","Darwin Art Company");
    $app->set_message("message","Bins");
-   require MODEL;
-   $app->set_message("list", product_list());
-   $app->render(LAYOUT,"bins");
+   $app->set_message("list", product_list());}
+   else {$app->set_message("message","You are not authorised");}
+
+   if (is_admin_authenticated()){
+     $app->render(ADMIN,"bins");}
+     else {
+       $app->render(LAYOUT,"notauthorised");
+     }
 });
 
 get("/myaccount",function($app){
@@ -48,7 +65,12 @@ get("/leaderboard",function($app){
    $app->set_message("message","Leader Board");
    require MODEL;
    $app->set_message("list", leaderboard());
-   $app->render(LAYOUT,"leaderboard");
+
+   if (is_admin_authenticated()){
+     $app->render(ADMIN,"adminleaderboard");}
+     else {
+       $app->render(LAYOUT,"leaderboard");
+     }
 });
 
 get("/points",function($app){
@@ -68,10 +90,20 @@ get("/cart",function($app){
 });
 
 get("/addbin",function($app){
+
+  require MODEL;
+  if (is_admin_authenticated()){
    $app->set_message("title","My Cart");
-   $app->set_message("message","Your cart:");
-   require MODEL;
-   $app->render(LAYOUT,"addbin");
+   $app->set_message("message","Your cart:");}
+   else {$app->set_message("message","You are not authorised");}
+
+   if (is_admin_authenticated()){
+     $app->render(ADMIN,"addbin");}
+     else {
+       $app->render(LAYOUT,"notauthorised");
+     }
+
+
 });
 
 get("/",function($app){
@@ -80,8 +112,32 @@ get("/",function($app){
    $app->set_message("title","Home");
    $app->set_message("message","Home");
    $app->set_message("name",get_user_name());
-   $app->render(LAYOUT,"home");
 
+   if (is_admin_authenticated()){
+     $app->render(ADMIN,"home");}
+     else {
+       $app->render(LAYOUT,"home");
+     }
+
+});
+
+get("/admin_signin",function($app){
+   $app->force_to_http("/admin_signin");
+   $app->set_message("title","Administrater sign in");
+   require MODEL;
+   try{
+     if(is_authenticated()){
+        $app->set_flash("You do not have permission to access this page");
+        $app->redirect_to("/");
+     }
+     else if(is_admin_authenticated()){
+       $app->redirect_to("/admin");
+     }
+   }
+   catch(Exception $e){
+       $app->set_message("error",$e->getMessage($app));
+   }
+   $app->render(ADMIN,"admin_signin");
 });
 
 get("/signin",function($app){
@@ -167,6 +223,26 @@ get("/signout",function($app){
          $app->set_flash("You are now signed out.");
          $app->redirect_to("/");
       }
+
+
+
+
+      catch(Exception $e){
+        $app->set_flash("Something wrong with the sessions.");
+        $app->redirect_to("/");
+     }
+   }
+
+   if(is_admin_authenticated()){
+      try{
+         sign_out();
+         $app->set_flash("You are now signed out.");
+         $app->redirect_to("/");
+      }
+
+
+
+
       catch(Exception $e){
         $app->set_flash("Something wrong with the sessions.");
         $app->redirect_to("/");
@@ -243,6 +319,27 @@ post("/signin",function($app){
        $app->redirect_to("/signin");
   }
   $app->set_flash("Lovely, you are now signed in!");
+  $app->redirect_to("/");
+});
+
+post("/admin_signin",function($app){
+  $admin = $app->form('name');
+  $password = $app->form('password');
+  if($admin && $password){
+    require MODEL;
+    try{
+       admin_sign_in($admin,$password);
+    }
+    catch(Exception $e){
+      $app->set_flash("Could not sign you in. Try again. {$e->getMessage()}");
+      $app->redirect_to("/admin_signin");
+    }
+  }
+  else{
+       $app->set_flash("Invalid credentials, try again");
+       $app->redirect_to("/admin_signin");
+  }
+  $app->set_flash("Welcome admin");
   $app->redirect_to("/");
 });
 

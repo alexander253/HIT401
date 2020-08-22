@@ -1,4 +1,4 @@
-<h1>Add a Product</h1>
+<h1>Add a Bin</h1>
 <div>
 <form action='/addbin' method='POST'>
  <input type='hidden' name='_method' value='post' />

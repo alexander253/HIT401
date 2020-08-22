@@ -6,6 +6,7 @@ echo "<h1>$message</h1>";
      $email = htmlspecialchars($detail['email'],ENT_QUOTES, 'UTF-8');
      $fname = htmlspecialchars($detail['fname'],ENT_QUOTES, 'UTF-8');
      $lname = htmlspecialchars($detail['lname'],ENT_QUOTES, 'UTF-8');
+     $points = htmlspecialchars($detail['points'],ENT_QUOTES, 'UTF-8');
      $title= htmlspecialchars($detail['title'],ENT_QUOTES, 'UTF-8');
      $address = htmlspecialchars($detail['address'],ENT_QUOTES, 'UTF-8');
      $city = htmlspecialchars($detail['city'],ENT_QUOTES, 'UTF-8');
@@ -18,8 +19,7 @@ echo "<h1>$message</h1>";
    <li>Email: {$email}</li>
    <li>First Name: {$fname}</li>
    <li>Last Name: {$lname}</li>
-   <li>Address: {$address}</li>
-   <li>Phone number: {$phone}</li>
+   <li>Points: {$points}</li>
    </ul>";
 
 

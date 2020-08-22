@@ -11,9 +11,9 @@
 <nav>
 <ul>
   <li><a href='/'>Home</a></li>
-  <li><a href='/bins'>Bins</a></li>
+  <!--<li><a href='/bins'>Bins</a></li>
   <li><a href='/addbin'>Add a Bin</a></li>
-  <li><a href='/cart'>My Cart</a></li>
+  <li><a href='/cart'>My Cart</a></li>-->
   <li><a href='/myaccount'>My Account</a></li>
   <li><a href='/leaderboard'>Leader Board</a></li>
   <li><a href='/signin'>Sign in</a></li>
