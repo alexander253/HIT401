@@ -1,18 +1,19 @@
 <h1>Add a Product</h1>
 <div>
-<form action='/addproduct' method='POST'>
+<form action='/addbin' method='POST'>
  <input type='hidden' name='_method' value='post' />
 
 
- <label for='desc'>Description</label>
- <input type='text' id='desc' name='desc' />
+ <label for='type'>Type</label>
+ <input type='text' id='type' name='type' />
 
- <label for='price'>Price</label>
- <input type='number' id='price' name='price' />
+ <label for='loc'>Location</label>
+ <input type='text' id='loc' name='loc' />
 
- <label for='col'>Colour</label>
- <input type='text' id='col' name='col' />
+ <label for='use'>Usage</label>
+ <input type='text' id='use' name='use' />
 
+<!--
 <label for="cate">Category:</label>
 <select name="cate" id="cate">
   <option value="Common">Common</option>
@@ -27,8 +28,8 @@
   <option value="Large">Large</option>
   <option value="Extra Large">Extra Large</option>
 </select>
+-->
 
-
- <input type='submit' value='Add product' />
+ <input type='submit' value='Add bin' />
 </form>
 </div>

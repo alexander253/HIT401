@@ -27,12 +27,12 @@ require APP;
 
 
 #GET Functions
-get("/products",function($app){
+get("/bins",function($app){
    $app->set_message("title","Darwin Art Company");
-   $app->set_message("message","Products");
+   $app->set_message("message","Bins");
    require MODEL;
    $app->set_message("list", product_list());
-   $app->render(LAYOUT,"products");
+   $app->render(LAYOUT,"bins");
 });
 
 get("/myaccount",function($app){
@@ -67,11 +67,11 @@ get("/cart",function($app){
    $app->render(LAYOUT,"cart");
 });
 
-get("/addproduct",function($app){
+get("/addbin",function($app){
    $app->set_message("title","My Cart");
    $app->set_message("message","Your cart:");
    require MODEL;
-   $app->render(LAYOUT,"addproduct");
+   $app->render(LAYOUT,"addbin");
 });
 
 get("/",function($app){
@@ -254,19 +254,17 @@ put("/change",function($app){
 });
 
 
-post("/addproduct",function($app){
+post("/addbin",function($app){
       require MODEL;
-      $description = $app->form('desc');
-      $price = $app->form('price');
-      $category = $app->form('cate');
-      $colour = $app->form('col');
-      $size = $app->form('size');
+      $type = $app->form('type');
+      $location = $app->form('loc');
+      $used = $app->form('use');
 
-      if($description && $price && $category && $colour && $size){
-      addproduct($description, $price, $category, $colour, $size);
-      $app->set_flash(htmlspecialchars($app->form('desc'))." is now added ");
+      if($type && $location && $used){
+      addbin($type, $location, $used);
+      $app->set_flash(htmlspecialchars($app->form('type'))." bin is now added at ". htmlspecialchars($app->form('loc')) );
           }
-      $app->redirect_to("/products");
+      $app->redirect_to("/bins");
 
       });
 
@@ -304,18 +302,40 @@ post("/addpoints",function($app){
       $db = get_db();
       $email= $_SESSION["email"];
 
+
+//Will propbably seperate some of this code into models to make cleaner
+
+//select points from users account
       $query = "SELECT points FROM user where email = '$email'";
       $statement= $db->prepare($query);
       $statement->execute();
       $list = $statement->fetch(PDO::FETCH_ASSOC);
+//select usage points from bin with id=1
+      $query_bin = "SELECT used FROM bin where id = '1'";
+      $statement= $db->prepare($query_bin);
+      $statement->execute();
+      $bin_list = $statement->fetch(PDO::FETCH_ASSOC);
 
+
+//cast the results into an integer
       $points= (int) $list['points'];
+      $bin_used= (int) $bin_list['used'];
 
+//add 1 point to their totals
       $updated_points = $points+ 1;
+      $updated_bin= $bin_used+1;
 
+//update their totals in the database
       $query2 = "UPDATE user set points = '$updated_points' where email = '$email'";
+      $query3 = "UPDATE bin set used = '$updated_bin' where id = '1'";
+
       $statement = $db->prepare($query2);
       $statement -> execute();
+
+      $statement = $db->prepare($query3);
+      $statement -> execute();
+
+//redirect to points page (which they should be on anyway)
       $app->redirect_to("/points");
 
       })

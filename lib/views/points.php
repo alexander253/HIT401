@@ -1,5 +1,5 @@
 <?php
-echo "<h1>POINTS</h1>";
+echo "<h1>Claim points for Red Bin</h1>";
  //Print the list of account details
  if(!empty($list)){
    foreach($list As $detail){

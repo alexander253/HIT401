@@ -12,14 +12,12 @@ CREATE TABLE `user` (
   PRIMARY KEY (email)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `product` (
-  productno int(255) NOT NULL auto_increment,
-  description varchar(255) NOT NULL,
-  price int(255) NOT NULL,
-  category varchar(255) NOT NULL,
-  colour varchar(255) NOT NULL,
-  size varchar(255) NOT NULL,
-  PRIMARY KEY (productno)
+CREATE TABLE `bin` (
+  id int(255) NOT NULL auto_increment,
+  type varchar(255) NOT NULL,
+  location varchar(255) NOT NULL,
+  used int(255),
+  PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `purchase` (

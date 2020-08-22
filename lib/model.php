@@ -43,11 +43,11 @@ function cart(){
 }
 
 #Add product
-function addproduct( $description, $price, $category, $colour, $size){
+function addbin($type, $location, $used){
     $db = get_db();
-    $query = "INSERT INTO product (description, price, category, colour, size) VALUES (?,?,?,?,?)";
+    $query = "INSERT INTO bin (type, location, used) VALUES (?,?,?)";
     $statement = $db->prepare($query);
-    $binding = array($description, $price, $category, $colour, $size);
+    $binding = array($type, $location, $used);
     $statement -> execute($binding);
 }
 
@@ -97,7 +97,7 @@ function placeorder($date, $email, $purchaseno, $itemno, $productno){
 function product_list(){
   try{
     $db = get_db();
-    $query = "SELECT productno, description, price, category, colour, size FROM product";
+    $query = "SELECT id,type,location,used FROM bin";
     $statement = $db->prepare($query);
     $statement ->execute();
     $list = $statement->fetchall(PDO::FETCH_ASSOC);
