@@ -20,6 +20,7 @@
   <li><a href='/signup'>Sign up</a></li>
   <li><a href='/signout'>Sign out</a></li>
   <li><a href='/points'>Points</a></li>
+  <li><a href='/rubbish_items'>Rubbish Items</a></li>
 
 </ul>
 </nav>
