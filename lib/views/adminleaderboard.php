@@ -19,13 +19,13 @@ tr:nth-child(even) {
 </style>
 
 
-
 <?php
 echo "<h1>Leader Board</h1>";
 
 
  echo "<table>
    <tr>
+     <th>Rank</th>
      <th>Email</th>
      <th>First Name</th>
      <th>Last Name</th>
@@ -46,6 +46,7 @@ echo "<h1>Leader Board</h1>";
      $postcode = htmlspecialchars($detail['postcode'],ENT_QUOTES, 'UTF-8');
      $phone= htmlspecialchars($detail['phone'],ENT_QUOTES, 'UTF-8');
      $points= htmlspecialchars($detail['points'],ENT_QUOTES, 'UTF-8');
+     $rank++;
 
 
    echo "
@@ -53,6 +54,7 @@ echo "<h1>Leader Board</h1>";
    <table>
 
      <tr>
+       <td>{$rank}</td>
        <td>{$email}</td>
        <td>{$fname}</td>
        <td>{$lname}</td>

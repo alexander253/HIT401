@@ -20,6 +20,14 @@ CREATE TABLE `bin` (
   PRIMARY KEY (id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
+CREATE TABLE `rubbish` (
+  id int(255) NOT NULL auto_increment,
+  type varchar(255) NOT NULL,
+  description varchar(255) NOT NULL,
+
+  PRIMARY KEY (id)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
 CREATE TABLE `purchase` (
   purchaseno varchar(255) NOT NULL,
   date varchar(255) NOT NULL,

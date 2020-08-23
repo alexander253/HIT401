@@ -14,14 +14,20 @@
   <li><a href='/bins'>Bins</a></li>
   <li><a href='/addbin'>Add a Bin</a></li>
   <!--<li><a href='/cart'>My Cart</a></li>
-  <li><a href='/myaccount'>My Account</a></li>
+      <li><a href='/myaccount'>My Account</a></li>
+      <li><a href='/signin'>Sign in</a></li>
+      <li><a href='/signup'>Sign up</a></li>
+      <li><a href='/points'>Points</a></li>
 -->
 
   <li><a href='/leaderboard'>Leader Board</a></li>
-  <li><a href='/signin'>Sign in</a></li>
-  <li><a href='/signup'>Sign up</a></li>
+
   <li><a href='/signout'>Sign out</a></li>
-    <li><a href='/points'>Points</a></li>
+
+  <li><a href='/addrubbish_item'>Add rubbish item</a></li>
+  <li><a href='/rubbish_items'>Rubbish items</a></li>
+
+
 </ul>
 </nav>
 

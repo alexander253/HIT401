@@ -19,6 +19,7 @@ DEFINE("APP",LIB."/application.php");
 
 DEFINE("LAYOUT","standard");
 DEFINE("ADMIN","admin");
+DEFINE("ADMINSIGN","admin_signin");
 
 
 
@@ -50,6 +51,26 @@ get("/bins",function($app){
      else {
        $app->render(LAYOUT,"notauthorised");
      }
+});
+
+get("/rubbish_items",function($app){
+
+  require MODEL;
+  if (is_admin_authenticated()){
+   $app->set_message("title","Darwin Art Company");
+   $app->set_message("message","Rubbish Items");
+   $app->set_message("list", rubbish_list());
+   $app->render(ADMIN,"rubbish_items");
+
+ }
+
+   else {
+     $app->set_message("title","Darwin Art Company");
+     $app->set_message("message","Rubbish Items");
+     $app->set_message("list", rubbish_list());
+     $app->render(LAYOUT,"rubbish_items");
+   }
+
 });
 
 get("/myaccount",function($app){
@@ -106,6 +127,23 @@ get("/addbin",function($app){
 
 });
 
+get("/addrubbish_item",function($app){
+
+  require MODEL;
+  if (is_admin_authenticated()){
+   $app->set_message("title","My Cart");
+   $app->set_message("message","Your cart:");}
+   else {$app->set_message("message","You are not authorised");}
+
+   if (is_admin_authenticated()){
+     $app->render(ADMIN,"addrubbish");}
+     else {
+       $app->render(LAYOUT,"notauthorised");
+     }
+
+
+});
+
 get("/",function($app){
   require MODEL;
    $app->force_to_http("/");
@@ -123,7 +161,7 @@ get("/",function($app){
 
 get("/admin_signin",function($app){
    $app->force_to_http("/admin_signin");
-   $app->set_message("title","Administrater sign in");
+   $app->set_message("title","Admin sign in");
    require MODEL;
    try{
      if(is_authenticated()){
@@ -137,7 +175,7 @@ get("/admin_signin",function($app){
    catch(Exception $e){
        $app->set_message("error",$e->getMessage($app));
    }
-   $app->render(ADMIN,"admin_signin");
+   $app->render(ADMINSIGN,"admin_signin");
 });
 
 get("/signin",function($app){
@@ -225,8 +263,6 @@ get("/signout",function($app){
       }
 
 
-
-
       catch(Exception $e){
         $app->set_flash("Something wrong with the sessions.");
         $app->redirect_to("/");
@@ -239,9 +275,6 @@ get("/signout",function($app){
          $app->set_flash("You are now signed out.");
          $app->redirect_to("/");
       }
-
-
-
 
       catch(Exception $e){
         $app->set_flash("Something wrong with the sessions.");
@@ -364,6 +397,21 @@ post("/addbin",function($app){
       $app->redirect_to("/bins");
 
       });
+
+      post("/addrubbish_item",function($app){
+            require MODEL;
+            $type = $app->form('type');
+            $description = $app->form('desc');
+
+            if($type && $description){
+            addrubbish($type, $description);
+            $app->set_flash(htmlspecialchars($app->form('desc'))." item is now added belonging to: ". htmlspecialchars($app->form('type')) );
+                }
+            $app->redirect_to("/rubbish_items");
+
+            });
+
+
 
 post("/cart",function($app){
       session_start();

@@ -26,6 +26,7 @@ echo "<h1>Leader Board</h1>";
 
  echo "<table>
    <tr>
+     <th>Rank</th>
      <th>Name</th>
      <th>Points</th>
    </tr>
@@ -44,6 +45,7 @@ echo "<h1>Leader Board</h1>";
      $postcode = htmlspecialchars($detail['postcode'],ENT_QUOTES, 'UTF-8');
      $phone= htmlspecialchars($detail['phone'],ENT_QUOTES, 'UTF-8');
      $points= htmlspecialchars($detail['points'],ENT_QUOTES, 'UTF-8');
+     $rank++;
 
 
    echo "
@@ -51,6 +53,7 @@ echo "<h1>Leader Board</h1>";
    <table>
 
      <tr>
+     <td>{$rank}</td>
        <td>{$fname}</td>
        <td>{$points}</td>
      </tr>
@@ -67,7 +70,14 @@ echo "<h1>Leader Board</h1>";
  }
 }
 
+
+
+
+
+
  else{
    echo "<h2>Something went wrong</h2>";}
+
+
 
  ?>

@@ -9,10 +9,4 @@ if(!empty($_SESSION["email"])){
     echo "You are not signed in, sign in or sign up to to start earning points";}
 
 
-
-
-
-
-
-
  ?>

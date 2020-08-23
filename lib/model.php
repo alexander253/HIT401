@@ -51,6 +51,14 @@ function addbin($type, $location, $used){
     $statement -> execute($binding);
 }
 
+function addrubbish($type, $description){
+    $db = get_db();
+    $query = "INSERT INTO rubbish (type, description) VALUES (?,?)";
+    $statement = $db->prepare($query);
+    $binding = array($type, $description);
+    $statement -> execute($binding);
+}
+
 #place order stores data into "purchase" and "purchaseitem" tables
 function placeorder($date, $email, $purchaseno, $itemno, $productno){
     session_start();
@@ -109,6 +117,20 @@ function product_list(){
   }
   }
 
+  function rubbish_list(){
+    try{
+      $db = get_db();
+      $query = "SELECT * FROM rubbish";
+      $statement = $db->prepare($query);
+      $statement ->execute();
+      $list = $statement->fetchall(PDO::FETCH_ASSOC);
+      return $list;
+    }
+    catch(PDOException $e){
+      throw new Exception($e->getMessage());
+      return "";
+    }
+    }
 #get all account details from database
   function my_account(){
     session_start();
@@ -144,6 +166,7 @@ function product_list(){
         throw new Exception($e->getMessage());
         return "";
       }
+
       }
 
     #get point details from database

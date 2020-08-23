@@ -27,6 +27,6 @@ echo "<h1>$message</h1>";
 }
 
  else{
-   echo "<h2>Something went wrong</h2>";}
+   echo "<h2>You are not signed in yet</h2>";}
 
  ?>
