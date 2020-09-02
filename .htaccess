@@ -3,10 +3,10 @@
 # If you want to allow external access to content in sub-directories of the root then uncomment the Apache directive ending with !-d
 
 # Here are meanings of the more cryptic symbols
-# -d Treats the TestString as a pathname and tests whether or not it exists, and is a directory. 
+# -d Treats the TestString as a pathname and tests whether or not it exists, and is a directory.
 # !-d If the request is for an existing directory then index.php isn't served.
 # -f treats the TestString as a pathname and tests whether or not it exists, and is a regular file
-# !-f If the request is for an existing file then index.php isn't served. 
+# !-f If the request is for an existing file then index.php isn't served.
 
 # The rewrite rule captures the request (in parenthesis). The capture is held in a variable called $1.
 # The rewrite is "index.php?" followed by the captured request.
@@ -19,8 +19,24 @@
 # The net effect of all this is to funnel all requests into a single file - index.php
 
 <IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f	
-	RewriteRule ^(.*)$ index.php?$1 [QSA,L]	
+  #  RewriteEngine On
+  #  RewriteCond %{REQUEST_FILENAME} !-d
+  #  RewriteCond %{REQUEST_FILENAME} !-f
+	#RewriteRule ^(.*)$ index.php?$1 [QSA,L]
+
+
+  RewriteEngine On
+
+  RewriteRule ^\.htaccess$ - [F]
+
+  RewriteCond %{REQUEST_URI} =""
+  RewriteRule ^.*$ /webroot/index.php [NC,L]
+
+  RewriteCond %{REQUEST_URI} !^/webroot/.*$
+  RewriteRule ^(.*)$ /webroot/$1
+
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^.*$ - [NC,L]
+
+  RewriteRule ^public/.*$ /webroot/index.php [NC,L]
 </IfModule>
