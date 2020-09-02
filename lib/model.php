@@ -4,7 +4,7 @@
 function get_db(){
     $db = null;
     try{
-        $db = new PDO('mysql:host=localhost;dbname=waste_app', 'root','');
+        $db = new PDO('mysql:host=z8dl7f9kwf2g82re.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306;dbname=onsigltezg12crks', 's2j1nc0cwmiyk1ds','wrih75ysww2o76c3');
         $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
     catch(PDOException $e){
