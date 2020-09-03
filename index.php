@@ -143,6 +143,7 @@ get("/addrubbish_item",function($app){
 });
 
 get("/",function($app){
+  $app->force_to_http("/");
   require MODEL;
    $app->set_message("title","Home");
    $app->set_message("message","Home");
