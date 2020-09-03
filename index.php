@@ -146,7 +146,7 @@ get("/addrubbish_item",function($app){
 
 get("/",function($app){
   require MODEL;
-   $app->force_to_http("/");
+   $app->force_to_https("/");
    $app->set_message("title","Home");
    $app->set_message("message","Home");
    $app->set_message("name",get_user_name());
