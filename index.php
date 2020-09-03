@@ -27,7 +27,7 @@ DEFINE("ADMINSIGN","admin_signin");
 
 
 # This inserts our application code which handles the requests and other things
-require APP;
+//require APP;
 
 
 
