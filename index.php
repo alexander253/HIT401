@@ -4,7 +4,7 @@ ini_set('display_errors','On');
 error_reporting(E_ERROR | E_PARSE);
 
 /* Set the path to the Application folder */
-DEFINE("LIB",$_SERVER['DOCUMENT_ROOT']."/index.php/");
+DEFINE("LIB",$_SERVER['DOCUMENT_ROOT']."/lib/");
 
 /* SET VIEWS path */
 DEFINE("VIEWS",LIB."views/");
@@ -15,8 +15,6 @@ DEFINE("MODEL",LIB."/model.php");
 DEFINE("APP",LIB."/application.php");
 
 # Define a layout
-
-
 DEFINE("LAYOUT","standard");
 DEFINE("ADMIN","admin");
 DEFINE("ADMINSIGN","admin_signin");
